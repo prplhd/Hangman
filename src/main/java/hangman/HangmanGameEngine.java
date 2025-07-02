@@ -1,8 +1,13 @@
 package main.java.hangman;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class HangmanGameEngine {
+    static final String START = "да";
+    static final String QUIT = "нет";
+    static final int MAX_MISTAKES = 8;
+
     static int mistakesCount = 0;
     static SecretWordManager secretWordManager;
 
@@ -11,55 +16,110 @@ public class HangmanGameEngine {
         System.out.println("-----------------------------");
         System.out.println("Вам предстоит угадать загаданное слово и");
         System.out.println("спаси человечка, вводя одну букву за другой");
-        System.out.println("У вас будет 8 попыток!");
+        System.out.println("У вас будет " + MAX_MISTAKES + " попыток!");
         System.out.println("-----------------------------");
         startNewGame();
     }
 
     public static void startNewGame() {
-        System.out.println("\nНачать новую игру? (Да/Нет)");
+        while (true) {
+            String choice = "";
+            System.out.println("\nНачать новую игру? (" + START + "/" + QUIT + ")");
+            Scanner scanner = new Scanner(System.in);
+            choice = scanner.nextLine().trim().toLowerCase();
 
-        Scanner scanner = new Scanner(System.in);
-        String choice = scanner.nextLine().trim().toLowerCase();
+            if (choice.equals(START)) {
+                mistakesCount = 0;
+                runGame();
+                continue;
+            }
 
-        if (choice.equals("нет")) {
-            System.out.println("Мы понимаем, не все готовы взять на себя");
-            System.out.println("такую ответственность... До свидания (ಥ﹏ಥ)");
-            return;
-        }
+            if (choice.equals(QUIT)) {
+                System.out.println("\nЖаль, ведь человечку больше некому");
+                System.out.println("помочь... До свидания (ಥ﹏ಥ)");
+                break;
+            }
 
-        if (choice.equals("да")) {
-            mistakesCount = 0;
-            runGame();
+            System.out.print("\nНекорректный выбор. Пожалуйста, введите \"" + START + "\" или \"" + QUIT + "\"\n");
         }
     }
 
-    public static void runGame() {
+    static void runGame() {
+        initSecretWord();
+
+        while (!isGameOver()) {
+            if (isWin(secretWordManager.secretWordMask)) {
+                displayWinMessage();
+                return;
+            }
+            processNextGuess();
+        }
+
+        displayLossMessage();
+    }
+
+    static void processNextGuess() {
+        displayGameProcess();
+        System.out.println(".................................");
+        System.out.print("\nВведите букву: ");
+        secretWordManager.checkGuessedLetter(getGuessedLetter());
+    }
+
+    static void initSecretWord() {
         secretWordManager = new SecretWordManager();
         secretWordManager.setSecretWord();
         secretWordManager.createMask();
-
-        while (!isGameOut()) {
-            displayGameProcess();
-            secretWordManager.isLetterGuessed(getGuessedLetter());
-
-        }
-    }
-
-    static boolean isGameOut() {
-        return mistakesCount >= 8;
     }
 
     static void displayGameProcess() {
+        HangmanGraphics.displayHangmanStage(mistakesCount);
         System.out.println("Угадываемое слово:");
-        System.out.println(secretWordManager.secretWordMask);
-        System.out.println("Человечка повесят через " + (8 - mistakesCount) + " ошибок");
-        System.out.print("Введите букву: ");
+        secretWordManager.displaySecretWordMask();
+        if (!secretWordManager.usedLetters.isEmpty()) {
+            System.out.println("\nОшибочные буквы:");
+            secretWordManager.displayUsedLetters();
+        }
+    }
+
+    static boolean isGameOver() {
+        return mistakesCount >= MAX_MISTAKES;
+    }
+
+    static void displayLossMessage() {
+        System.out.println("К сожалению, Вам не удалось спасти человечка..");
+        System.out.print("Загаданное слово: ");
+        secretWordManager.displaySecretWord();
+        HangmanGraphics.displayHangmanStage(mistakesCount);
+    }
+
+    static boolean isWin(ArrayList<Character> secretWordMask) {
+        return !secretWordMask.contains('▯');
+    }
+
+    static void displayWinMessage() {
+        System.out.println("\nУра! Вы спасли человечка!");
+        System.out.print("Загаданное слово: ");
+        secretWordManager.displaySecretWord();
+        HangmanGraphics.displaySavedHangman();
     }
 
     static Character getGuessedLetter() {
+
         Scanner scanner = new Scanner(System.in);
-        return scanner.next().toLowerCase().charAt(0);
+        while (true) {
+            String guessedLetter = scanner.next().trim().toLowerCase();
+
+            if (secretWordManager.isGuessedLetterValid(guessedLetter)) {
+                return secretWordManager.normalizeLetter(guessedLetter);
+            }
+
+            System.out.println("Некорректный ввод! Пожалуйста, введите одну букву русского алфавита.");
+        }
     }
 
+
+
+    static void increaseMistakesCount() {
+        mistakesCount++;
+    }
 }
