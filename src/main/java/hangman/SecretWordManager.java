@@ -1,8 +1,8 @@
 package main.java.hangman;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,14 +13,18 @@ public class SecretWordManager {
     ArrayList<Character> usedLetters = new ArrayList<>();
 
     List<String> loadDictionary() {
-        try {
-            Path dictionaryPath = Paths.get(SecretWordManager.class.getResource("/hangman/dictionary.txt").toURI());
-            return Files.readAllLines(dictionaryPath);
-        } catch (Exception e) {
+        List<String> dictionary = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader("dictionary.txt"));) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                dictionary.add(line);
+            }
+        } catch (IOException e) {
             System.out.println("Ошибка! Проверьте доступность словаря для начала игры");
             System.exit(0);
-            return List.of();
         }
+
+        return dictionary;
     }
 
     String chooseRandomSecretWord() {
