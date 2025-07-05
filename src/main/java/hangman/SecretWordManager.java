@@ -8,23 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static main.java.hangman.HangmanGameEngine.getUsedLetters;
+
 public class SecretWordManager {
     static final char HIDDEN_LETTER_SYMBOL = '▯';
     private final String secretWord = chooseRandomSecretWord();
     private final List<Character> secretWordMask = createMask();
-    private final List<Character> usedLetters = new ArrayList<>();
 
     public List<Character> getSecretWordMask() {
         return secretWordMask;
     }
 
-    public List<Character> getUsedLetters() {
-        return usedLetters;
-    }
-
     List<String> loadDictionary() {
         List<String> dictionary = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("dictionary.txt"));) {
+        String pathToDictionary = "dictionary.txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(pathToDictionary));) {
             String line;
             while ((line = reader.readLine()) != null) {
                 dictionary.add(line);
@@ -63,13 +61,9 @@ public class SecretWordManager {
         System.out.println(secretWord);
     }
 
-    void displayUsedLetters() {
-        System.out.println(usedLetters);
-    }
-
     void checkGuessedLetter(Character inputLetter) {
         boolean isOpenedLetter = secretWordMask.contains(inputLetter);
-        boolean isUsedLetter = usedLetters.contains(inputLetter);
+        boolean isUsedLetter = getUsedLetters().contains(inputLetter);
 
         if (isOpenedLetter || isUsedLetter) {
             System.out.println("\nВы уже вводили эту букву, попробуйте другую");
@@ -84,7 +78,7 @@ public class SecretWordManager {
     void letterIsNotGuessed(Character inputLetter) {
             HangmanGameEngine.increaseMistakesCount();
             System.out.println("\nВы допустили ошибку!");
-            usedLetters.add(inputLetter);
+            getUsedLetters().add(inputLetter);
     }
 
     void openLetter(Character letter) {

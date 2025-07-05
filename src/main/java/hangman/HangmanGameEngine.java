@@ -1,17 +1,18 @@
 package main.java.hangman;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import static main.java.hangman.SecretWordManager.HIDDEN_LETTER_SYMBOL;
 
 public class HangmanGameEngine {
-    static final String START = "да";
-    static final String QUIT = "нет";
-    static final int MAX_MISTAKES = 8;
-
-    static int mistakesCount = 0;
-    static SecretWordManager secretWordManager;
+    private static final int MAX_MISTAKES = 8;
+    private static int mistakesCount = 0;
+    private static final String START = "да";
+    private static final String QUIT = "нет";
+    private static SecretWordManager secretWordManager;
+    private static final List<Character> usedLetters = new ArrayList<>();
 
     public static void welcomeUserToTheGame() {
         System.out.println("\nДобро пожаловать в Виселицу!");
@@ -71,10 +72,18 @@ public class HangmanGameEngine {
         HangmanGraphics.displayHangmanStage(mistakesCount);
         System.out.println("Угадываемое слово:");
         secretWordManager.displaySecretWordMask();
-        if (!secretWordManager.getUsedLetters().isEmpty()) {
+        if (!usedLetters.isEmpty()) {
             System.out.println("\nОшибочные буквы:");
-            secretWordManager.displayUsedLetters();
+            displayUsedLetters();
         }
+    }
+
+    static void displayUsedLetters() {
+        System.out.println(usedLetters);
+    }
+
+    static List<Character> getUsedLetters() {
+        return usedLetters;
     }
 
     static boolean isGameOver() {
