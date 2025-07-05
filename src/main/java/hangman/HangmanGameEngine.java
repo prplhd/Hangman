@@ -1,6 +1,6 @@
 package main.java.hangman;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class HangmanGameEngine {
@@ -45,7 +45,7 @@ public class HangmanGameEngine {
     }
 
     static void runGame() {
-        initSecretWord();
+        secretWordManager = new SecretWordManager();
 
         while (!isGameOver()) {
             if (isWin(secretWordManager.secretWordMask)) {
@@ -63,12 +63,6 @@ public class HangmanGameEngine {
         System.out.println(".................................");
         System.out.print("\nВведите букву: ");
         secretWordManager.checkGuessedLetter(getGuessedLetter());
-    }
-
-    static void initSecretWord() {
-        secretWordManager = new SecretWordManager();
-        secretWordManager.setSecretWord();
-        secretWordManager.createMask();
     }
 
     static void displayGameProcess() {
@@ -92,7 +86,7 @@ public class HangmanGameEngine {
         HangmanGraphics.displayHangmanStage(mistakesCount);
     }
 
-    static boolean isWin(ArrayList<Character> secretWordMask) {
+    static boolean isWin(List<Character> secretWordMask) {
         return !secretWordMask.contains('▯');
     }
 

@@ -3,13 +3,14 @@ package main.java.hangman;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class SecretWordManager {
-    private String secretWord;
-    ArrayList<Character> secretWordMask = new ArrayList<>();
+    private final String secretWord = chooseRandomSecretWord();
+    List<Character> secretWordMask = createMask();
     ArrayList<Character> usedLetters = new ArrayList<>();
 
     List<String> loadDictionary() {
@@ -33,14 +34,12 @@ public class SecretWordManager {
         return wordsPool.get(randomIndex);
     }
 
-    void setSecretWord() {
-        secretWord = chooseRandomSecretWord();
-    }
-
-    void createMask() {
+    List<Character> createMask() {
+        List<Character> wordMask = new ArrayList<>();
         for (int i = 0; i < secretWord.length(); i++) {
-            secretWordMask.add('▯');
+            wordMask.add('▯');
         }
+        return wordMask;
     }
 
     void displaySecretWordMask() {
@@ -60,10 +59,10 @@ public class SecretWordManager {
     }
 
     void checkGuessedLetter(Character inputLetter) {
-        boolean isLetterOpened = secretWordMask.contains(inputLetter);
-        boolean isLetterTried = usedLetters.contains(inputLetter);
+        boolean isOpenedLetter = secretWordMask.contains(inputLetter);
+        boolean isUsedLetter = usedLetters.contains(inputLetter);
 
-        if (isLetterOpened || isLetterTried) {
+        if (isOpenedLetter || isUsedLetter) {
             System.out.println("\nВы уже вводили эту букву, попробуйте другую");
         } else if (containsLetter(inputLetter)) {
             System.out.println("\nВерно! Эта буква есть в слове");
@@ -79,10 +78,10 @@ public class SecretWordManager {
             usedLetters.add(inputLetter);
     }
 
-    void openLetter(Character inputLetter) {
+    void openLetter(Character letter) {
         for (int i = 0; i < secretWordMask.size(); i++) {
-            if (secretWord.charAt(i) == inputLetter) {
-                secretWordMask.set(i, inputLetter);
+            if (secretWord.charAt(i) == letter) {
+                secretWordMask.set(i, letter);
 
             }
         }
@@ -97,16 +96,16 @@ public class SecretWordManager {
         return false;
     }
 
-    boolean isGuessedLetterValid(String guessedLetter) {
-        return guessedLetter != null && guessedLetter.length() == 1 && isRussianLetter(guessedLetter);
+    boolean isGuessedLetterValid(String s) {
+        return s != null && s.length() == 1 && isRussianLetter(s);
     }
 
-    boolean isRussianLetter(String guessedLetter) {
-        char russianLetter = guessedLetter.toLowerCase().charAt(0);
+    boolean isRussianLetter(String s) {
+        char russianLetter = s.toLowerCase().charAt(0);
         return (russianLetter >= 'а' && russianLetter <= 'я') || russianLetter == 'ё';
     }
 
-    char normalizeLetter(String guessedLetter) {
-        return guessedLetter.charAt(0) == 'ё' ? 'е' : guessedLetter.charAt(0);
+    char normalizeLetter(String s) {
+        return s.charAt(0) == 'ё' ? 'е' : s.charAt(0);
     }
 }
