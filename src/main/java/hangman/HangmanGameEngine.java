@@ -48,7 +48,7 @@ public class HangmanGameEngine {
         secretWordManager = new SecretWordManager();
 
         while (!isGameOver()) {
-            if (isWin(secretWordManager.secretWordMask)) {
+            if (isWin(secretWordManager.getSecretWordMask())) {
                 displayWinMessage();
                 return;
             }
@@ -69,7 +69,7 @@ public class HangmanGameEngine {
         HangmanGraphics.displayHangmanStage(mistakesCount);
         System.out.println("Угадываемое слово:");
         secretWordManager.displaySecretWordMask();
-        if (!secretWordManager.usedLetters.isEmpty()) {
+        if (!secretWordManager.getUsedLetters().isEmpty()) {
             System.out.println("\nОшибочные буквы:");
             secretWordManager.displayUsedLetters();
         }

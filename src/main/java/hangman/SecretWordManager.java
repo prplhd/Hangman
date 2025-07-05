@@ -10,8 +10,16 @@ import java.util.Random;
 
 public class SecretWordManager {
     private final String secretWord = chooseRandomSecretWord();
-    List<Character> secretWordMask = createMask();
-    ArrayList<Character> usedLetters = new ArrayList<>();
+    private final List<Character> secretWordMask = createMask();
+    private final List<Character> usedLetters = new ArrayList<>();
+
+    public List<Character> getSecretWordMask() {
+        return secretWordMask;
+    }
+
+    public List<Character> getUsedLetters() {
+        return usedLetters;
+    }
 
     List<String> loadDictionary() {
         List<String> dictionary = new ArrayList<>();
