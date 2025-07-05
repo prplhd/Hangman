@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 public class SecretWordManager {
+    static final char HIDDEN_LETTER_SYMBOL = '▯';
     private final String secretWord = chooseRandomSecretWord();
     private final List<Character> secretWordMask = createMask();
     private final List<Character> usedLetters = new ArrayList<>();
@@ -45,7 +46,7 @@ public class SecretWordManager {
     List<Character> createMask() {
         List<Character> wordMask = new ArrayList<>();
         for (int i = 0; i < secretWord.length(); i++) {
-            wordMask.add('▯');
+            wordMask.add(HIDDEN_LETTER_SYMBOL);
         }
         return wordMask;
     }

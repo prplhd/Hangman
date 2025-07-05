@@ -3,6 +3,8 @@ package main.java.hangman;
 import java.util.List;
 import java.util.Scanner;
 
+import static main.java.hangman.SecretWordManager.HIDDEN_LETTER_SYMBOL;
+
 public class HangmanGameEngine {
     static final String START = "да";
     static final String QUIT = "нет";
@@ -40,7 +42,7 @@ public class HangmanGameEngine {
                 break;
             }
 
-            System.out.print("\nНекорректный выбор. Пожалуйста, введите \"" + START + "\" или \"" + QUIT + "\"\n");
+            System.out.print("\nНекорректный выбор. Пожалуйста, введите '" + START + "' или '" + QUIT + "'\n");
         }
     }
 
@@ -87,7 +89,7 @@ public class HangmanGameEngine {
     }
 
     static boolean isWin(List<Character> secretWordMask) {
-        return !secretWordMask.contains('▯');
+        return !secretWordMask.contains(HIDDEN_LETTER_SYMBOL);
     }
 
     static void displayWinMessage() {
