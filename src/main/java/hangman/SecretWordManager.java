@@ -3,7 +3,6 @@ package main.java.hangman;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -61,7 +60,7 @@ public class SecretWordManager {
         System.out.println(secretWord);
     }
 
-    void checkGuessedLetter(Character inputLetter) {
+    void processLetterGuess(Character inputLetter) {
         boolean isOpenedLetter = secretWordMask.contains(inputLetter);
         boolean isUsedLetter = getUsedLetters().contains(inputLetter);
 
@@ -71,11 +70,11 @@ public class SecretWordManager {
             System.out.println("\nВерно! Эта буква есть в слове");
             openLetter(inputLetter);
         } else {
-            letterIsNotGuessed(inputLetter);
+            processIncorrectGuess(inputLetter);
         }
     }
 
-    void letterIsNotGuessed(Character inputLetter) {
+    void processIncorrectGuess(char inputLetter) {
             HangmanGameEngine.increaseMistakesCount();
             System.out.println("\nВы допустили ошибку!");
             getUsedLetters().add(inputLetter);
@@ -104,11 +103,11 @@ public class SecretWordManager {
     }
 
     boolean isRussianLetter(String s) {
-        char russianLetter = s.toLowerCase().charAt(0);
-        return (russianLetter >= 'а' && russianLetter <= 'я') || russianLetter == 'ё';
+        char letter = s.toLowerCase().charAt(0);
+        return (letter >= 'а' && letter <= 'я') || letter == 'ё';
     }
 
-    char normalizeLetter(String s) {
-        return s.charAt(0) == 'ё' ? 'е' : s.charAt(0);
+    char normalizeLetter(char letter) {
+        return letter == 'ё' ? 'е' : letter;
     }
 }

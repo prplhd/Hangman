@@ -65,7 +65,7 @@ public class HangmanGameEngine {
         displayGameProcess();
         System.out.println(".................................");
         System.out.print("\nВведите букву: ");
-        secretWordManager.checkGuessedLetter(getGuessedLetter());
+        secretWordManager.processLetterGuess(getGuessedLetter());
     }
 
     static void displayGameProcess() {
@@ -115,7 +115,7 @@ public class HangmanGameEngine {
             String guessedLetter = scanner.next().trim().toLowerCase();
 
             if (secretWordManager.isGuessedLetterValid(guessedLetter)) {
-                return secretWordManager.normalizeLetter(guessedLetter);
+                return secretWordManager.normalizeLetter(guessedLetter.charAt(0));
             }
 
             System.out.println("Некорректный ввод! Пожалуйста, введите одну букву русского алфавита.");
