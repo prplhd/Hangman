@@ -66,27 +66,27 @@ public class SecretWordManager {
         System.out.println(secretWord);
     }
 
-    void processLetterGuess(Character inputLetter) {
-        boolean isOpenedLetter = secretWordMask.contains(inputLetter);
-        boolean isUsedLetter = getUsedLetters().contains(inputLetter);
+    void processLetterGuess(char letter) {
+        boolean isOpenedLetter = secretWordMask.contains(letter);
+        boolean isUsedLetter = getUsedLetters().contains(letter);
 
         if (isOpenedLetter || isUsedLetter) {
             System.out.println("\nВы уже вводили эту букву, попробуйте другую");
-        } else if (containsLetter(inputLetter)) {
+        } else if (containsLetter(letter)) {
             System.out.println("\nВерно! Эта буква есть в слове");
-            openLetter(inputLetter);
+            openLetter(letter);
         } else {
-            processIncorrectGuess(inputLetter);
+            processIncorrectGuess(letter);
         }
     }
 
-    void processIncorrectGuess(char inputLetter) {
+    void processIncorrectGuess(char letter) {
             HangmanGameEngine.increaseMistakesCount();
             System.out.println("\nВы допустили ошибку!");
-            getUsedLetters().add(inputLetter);
+            getUsedLetters().add(letter);
     }
 
-    void openLetter(Character letter) {
+    void openLetter(char letter) {
         for (int i = 0; i < secretWordMask.size(); i++) {
             if (secretWord.charAt(i) == letter) {
                 secretWordMask.set(i, letter);
