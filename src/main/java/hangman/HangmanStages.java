@@ -1,7 +1,7 @@
 package main.java.hangman;
 
-public class HangmanGraphics {
-    static String[] hangmanImages = new String[]{
+public class HangmanStages {
+    private static final String[] hangmanImages = new String[]{
             "",
 
             """
@@ -108,7 +108,7 @@ public class HangmanGraphics {
                    """
     };
 
-    static String savedHangman = """
+    private static final String savedHangman = """
                    
                    ‾\\ (◕‿◕) /‾
                      ‾‾‾|‾‾‾
@@ -116,11 +116,11 @@ public class HangmanGraphics {
                        / \\
                       /   \\""";
 
-    static void displayHangmanStage(int mistakesCount) {
-        System.out.println(hangmanImages[mistakesCount]);
+    static String getHangmanStage(int mistakesCount) {
+        return hangmanImages[mistakesCount];
     }
 
-    static void displaySavedHangman() {
-        System.out.println(savedHangman);
+    static String getSavedHangman() {
+        return savedHangman;
     }
 }

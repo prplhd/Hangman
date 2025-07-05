@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import static main.java.hangman.SecretWordManager.HIDDEN_LETTER_SYMBOL;
+import static main.java.hangman.HangmanStages.*;
 
 public class HangmanGameEngine {
     private static final int MAX_MISTAKES = 8;
@@ -69,7 +70,7 @@ public class HangmanGameEngine {
     }
 
     static void displayGameProcess() {
-        HangmanGraphics.displayHangmanStage(mistakesCount);
+        System.out.println(getHangmanStage(mistakesCount));
         System.out.println("Угадываемое слово:");
         secretWordManager.displaySecretWordMask();
         if (!usedLetters.isEmpty()) {
@@ -94,7 +95,7 @@ public class HangmanGameEngine {
         System.out.println("К сожалению, Вам не удалось спасти человечка..");
         System.out.print("Загаданное слово: ");
         secretWordManager.displaySecretWord();
-        HangmanGraphics.displayHangmanStage(mistakesCount);
+        System.out.println(getHangmanStage(mistakesCount));
     }
 
     static boolean isWin(List<Character> secretWordMask) {
@@ -105,7 +106,7 @@ public class HangmanGameEngine {
         System.out.println("\nУра! Вы спасли человечка!");
         System.out.print("Загаданное слово: ");
         secretWordManager.displaySecretWord();
-        HangmanGraphics.displaySavedHangman();
+        System.out.println(getSavedHangman());
     }
 
     static Character getGuessedLetter() {
