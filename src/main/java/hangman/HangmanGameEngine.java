@@ -15,14 +15,13 @@ public class HangmanGameEngine {
     private static SecretWordManager secretWordManager;
     private static final List<Character> usedLetters = new ArrayList<>();
 
-    public static void welcomeUserToTheGame() {
+    public static void printWelcomeMessage() {
         System.out.println("\nДобро пожаловать в Виселицу!");
         System.out.println("-----------------------------");
         System.out.println("Вам предстоит угадать загаданное слово и");
         System.out.println("спаси человечка, вводя одну букву за другой");
         System.out.println("У вас будет " + MAX_MISTAKES + " попыток!");
         System.out.println("-----------------------------");
-        startNewGame();
     }
 
     public static void startNewGame() {
@@ -34,6 +33,7 @@ public class HangmanGameEngine {
 
             if (choice.equals(START)) {
                 mistakesCount = 0;
+                usedLetters.clear();
                 runGame();
                 continue;
             }
@@ -52,31 +52,33 @@ public class HangmanGameEngine {
         secretWordManager = new SecretWordManager();
 
         while (!isGameOver()) {
+            displayGameStatus();
+            processPlayerTurn();
+
             if (isWin(secretWordManager.getSecretWordMask())) {
                 displayWinMessage();
-                return;
+            } else if (isLose()) {
+                displayLossMessage();
             }
-            processNextGuess();
         }
-
-        displayLossMessage();
     }
 
-    static void processNextGuess() {
-        displayGameProcess();
-        System.out.println(".................................");
-        System.out.print("\nВведите букву: ");
-        secretWordManager.processLetterGuess(getGuessedLetter());
-    }
-
-    static void displayGameProcess() {
+    static void displayGameStatus() {
         System.out.println(getHangmanStage(mistakesCount));
+
         System.out.println("Угадываемое слово:");
         secretWordManager.displaySecretWordMask();
+
         if (!usedLetters.isEmpty()) {
             System.out.println("\nОшибочные буквы:");
             displayUsedLetters();
         }
+    }
+
+    static void processPlayerTurn() {
+        System.out.println(".................................");
+        System.out.print("\nВведите букву: ");
+        secretWordManager.processLetterGuess(getGuessedLetter());
     }
 
     static void displayUsedLetters() {
@@ -88,6 +90,10 @@ public class HangmanGameEngine {
     }
 
     static boolean isGameOver() {
+        return isWin(secretWordManager.getSecretWordMask()) || isLose();
+    }
+
+    static boolean isLose() {
         return mistakesCount >= MAX_MISTAKES;
     }
 
@@ -109,7 +115,7 @@ public class HangmanGameEngine {
         System.out.println(getSavedHangman());
     }
 
-    static Character getGuessedLetter() {
+    static char getGuessedLetter() {
 
         Scanner scanner = new Scanner(System.in);
         while (true) {

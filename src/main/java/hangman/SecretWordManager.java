@@ -27,7 +27,8 @@ public class SecretWordManager {
                 dictionary.add(line);
             }
         } catch (IOException e) {
-            System.out.println("Ошибка! Проверьте доступность словаря для начала игры");
+            System.out.println("Ошибка! Проверьте доступность словаря в корневой папке проекта для начала игры:");
+            System.out.println("../Hangman/*здесь должен лежать dictionary.txt*");
             System.exit(0);
         }
 
