@@ -27,9 +27,9 @@ public class SecretWordManager {
                 dictionary.add(line);
             }
         } catch (IOException e) {
-            System.out.println("Ошибка! Проверьте доступность словаря в корневой папке проекта для начала игры:");
+            System.out.println("Ошибка чтения словаря! Проверьте доступность файла в корневой папке проекта:");
             System.out.println("../Hangman/*здесь должен лежать dictionary.txt*");
-            System.exit(0);
+            System.out.println("После чего начните новую игру");
         }
 
         return dictionary;
@@ -37,6 +37,11 @@ public class SecretWordManager {
 
     String chooseRandomSecretWord() {
         List<String> wordsPool = loadDictionary();
+
+        if (wordsPool.isEmpty()) {
+            throw new IllegalStateException("Словарь не загружен");
+        }
+
         int randomIndex = new Random().nextInt(wordsPool.size());
         return wordsPool.get(randomIndex);
     }

@@ -49,7 +49,11 @@ public class HangmanGameEngine {
     }
 
     static void runGame() {
-        secretWordManager = new SecretWordManager();
+        try {
+            secretWordManager = new SecretWordManager();
+        } catch (IllegalStateException e) {
+            return;
+        }
 
         while (!isGameOver()) {
             displayGameStatus();
