@@ -116,11 +116,11 @@ public class HangmanStages {
                        / \\
                       /   \\""";
 
-    static String getHangmanStage(int mistakesCount) {
+    public static String getHangmanStage(int mistakesCount) {
         return hangmanImages[mistakesCount];
     }
 
-    static String getSavedHangman() {
+    public static String getSavedHangman() {
         return savedHangman;
     }
 }
